@@ -5,8 +5,6 @@ on:
     branches:
       - 'xychen/test'
 
-permissions: write-all
-
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -14,6 +12,9 @@ env:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:      
       - name: Checkout
         uses: actions/checkout@v3
