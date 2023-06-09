@@ -5,7 +5,7 @@ on:
     branches:
       - 'xychen/test'
 
-permissions: read-all|write-all
+permissions: write-all
 
 env:
   REGISTRY: ghcr.io
