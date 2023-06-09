@@ -23,7 +23,7 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v4
         with:
-          images: tykio/tyk-operator
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
               type=semver,pattern=v{{version}}
               type=semver,pattern=v{{major}}.{{minor}}
@@ -39,7 +39,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.TYK_CI_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v4
