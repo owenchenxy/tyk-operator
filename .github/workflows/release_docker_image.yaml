@@ -49,5 +49,5 @@ jobs:
           push: ${{ startsWith(github.ref, 'refs/heads/xychen') }}
           tags: 0.13.0
           labels: ${{ steps.metadata.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
