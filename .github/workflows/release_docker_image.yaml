@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'xychen/test'
+      -
+permissions: read-all|write-all
 
 env:
   REGISTRY: ghcr.io
