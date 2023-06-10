@@ -12,9 +12,7 @@ env:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    permissions: write-all
     steps:      
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,7 +40,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          platforms: linux/amd64
+#          platforms: linux/amd64
           push: ${{ startsWith(github.ref, 'refs/heads/xychen') }}
           tags: 0.13.0
           labels: ${{ steps.metadata.outputs.labels }}
