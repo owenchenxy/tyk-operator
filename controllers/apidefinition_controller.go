@@ -712,12 +712,12 @@ func encodeIfNotBase64(s string) string {
 // updateLinkedPolicies ensure that all policies needed by this api definition are updated.
 func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *tykv1alpha1.ApiDefinition) {
 	r.Log.Info("Updating linked policies")
-	msg := fmt.Sprintf("++++++DEFAULT POLIGY IS+++++++\n %v", a.Spec.JWTDefaultPolicies)
-	fmt.Printf("%v", msg)
+
 	for x := range a.Spec.JWTDefaultPolicies {
 		a.Spec.JWTDefaultPolicies[x] = encodeIfNotBase64(a.Spec.JWTDefaultPolicies[x])
 	}
-
+	allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
+	fmt.Printf("==========all policies===========: %v\n", allPolicies)
 	for k, x := range a.Spec.JWTScopeToPolicyMapping {
 		a.Spec.JWTScopeToPolicyMapping[k] = encodeIfNotBase64(x)
 	}
