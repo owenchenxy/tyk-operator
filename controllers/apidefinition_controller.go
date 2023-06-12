@@ -516,16 +516,6 @@ func (r *ApiDefinitionReconciler) update(ctx context.Context, desired *tykv1alph
 
 		return err
 	}
-	r.updateLinkedPolicies(ctx, desired)
-	_, err = klient.Universal.Api().Update(ctx, &desired.Spec.APIDefinitionSpec)
-	if err != nil {
-		r.Log.Error(
-			err, "Failed to update JWT default polices on Tyk",
-			"ApiDefinition", client.ObjectKeyFromObject(desired).String(),
-		)
-		return err
-	}
-
 	return nil
 }
 

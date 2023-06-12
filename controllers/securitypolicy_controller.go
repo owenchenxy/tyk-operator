@@ -431,6 +431,17 @@ func (r *SecurityPolicyReconciler) updatePolicyStatus(
 		target := model.Target{Name: v.Name, Namespace: &namespace}
 
 		policy.Status.LinkedAPIs = append(policy.Status.LinkedAPIs, target)
+
+		apiOnTyk, _ := klient.Universal.Api().Get(ctx, EncodeNS(target.String()))
+		apiOnTyk.JWTDefaultPolicies = append(apiOnTyk.JWTDefaultPolicies, *policy.Spec.MID)
+		_, err := klient.Universal.Api().Update(ctx, apiOnTyk)
+		if err != nil {
+			r.Log.Error(
+				err, "Failed to update ApiDefinition on Tyk",
+				"ApiDefinition", target.String(),
+			)
+			return err
+		}
 	}
 
 	if fn != nil {
