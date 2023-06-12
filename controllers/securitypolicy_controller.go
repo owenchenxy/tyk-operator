@@ -442,6 +442,7 @@ func (r *SecurityPolicyReconciler) updatePolicyStatus(
 			)
 			return err
 		}
+		r.Log.Info("Successfully updated JWT default policies", "ApiDefinition", target.String())
 	}
 
 	if fn != nil {
