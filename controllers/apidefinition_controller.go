@@ -717,7 +717,10 @@ func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *t
 		a.Spec.JWTDefaultPolicies[x] = encodeIfNotBase64(a.Spec.JWTDefaultPolicies[x])
 	}
 	allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
-	fmt.Printf("==========all policies===========: %v\n", allPolicies)
+	for i, p := range allPolicies {
+		fmt.Printf("==========%d===========: %v\n", i, p)
+	}
+
 	for k, x := range a.Spec.JWTScopeToPolicyMapping {
 		a.Spec.JWTScopeToPolicyMapping[k] = encodeIfNotBase64(x)
 	}
