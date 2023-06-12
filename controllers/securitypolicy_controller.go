@@ -318,10 +318,10 @@ func (r *SecurityPolicyReconciler) update(ctx context.Context,
 		return nil, err
 	}
 
-	err = r.updateJWTDefaultPoliciesOfLinkedAPIs(ctx, policy)
-	if err != nil {
-		return nil, err
-	}
+	//err = r.updateJWTDefaultPoliciesOfLinkedAPIs(ctx, policy)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	polOnTyk, _ := klient.Universal.Portal().Policy().Get(ctx, *policy.Spec.MID) //nolint:errcheck
 
@@ -405,15 +405,15 @@ func (r *SecurityPolicyReconciler) create(ctx context.Context, policy *tykv1.Sec
 		return err
 	}
 
-	err = r.updateJWTDefaultPoliciesOfLinkedAPIs(ctx, policy)
-	if err != nil {
-		r.Log.Error(err,
-			"failed to update JWT default policies of linkedAPIs",
-			"Policy", client.ObjectKeyFromObject(policy),
-		)
-
-		return err
-	}
+	//err = r.updateJWTDefaultPoliciesOfLinkedAPIs(ctx, policy)
+	//if err != nil {
+	//	r.Log.Error(err,
+	//		"failed to update JWT default policies of linkedAPIs",
+	//		"Policy", client.ObjectKeyFromObject(policy),
+	//	)
+	//
+	//	return err
+	//}
 
 	polOnTyk, _ := klient.Universal.Portal().Policy().Get(ctx, *spec.MID) //nolint:errcheck
 
@@ -538,11 +538,15 @@ func (r *SecurityPolicyReconciler) updateStatusOfLinkedAPIs(ctx context.Context,
 			api.Status.LinkedByPolicies = addTarget(api.Status.LinkedByPolicies, target)
 		}
 
+		api.Spec.JWTDefaultPolicies = append(api.Spec.JWTDefaultPolicies, *policy.Spec.MID)
+		r.Log.Info("========JWTDefaultPolicies==========", "api", api.Spec.JWTDefaultPolicies)
+
 		if err := r.Status().Update(ctx, api); err != nil {
 			r.Log.Error(err, "Failed to update status of linked api definition", "api", name)
 
 			return err
 		}
+
 	}
 
 	return nil
