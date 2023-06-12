@@ -59,6 +59,7 @@ func (r *SecurityPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 
 	// Lookup policy object
 	policy := &tykv1.SecurityPolicy{}
+	policy := &tykv1.SecurityPolicy{}
 	if err := r.Get(ctx, req.NamespacedName, policy); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
