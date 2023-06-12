@@ -712,10 +712,6 @@ func encodeIfNotBase64(s string) string {
 func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *tykv1alpha1.ApiDefinition) {
 	r.Log.Info("Updating linked policies")
 
-	//for x := range a.Spec.JWTDefaultPolicies {
-	//	a.Spec.JWTDefaultPolicies[x] = encodeIfNotBase64(a.Spec.JWTDefaultPolicies[x])
-	//}
-
 	for k, x := range a.Spec.JWTScopeToPolicyMapping {
 		a.Spec.JWTScopeToPolicyMapping[k] = encodeIfNotBase64(x)
 	}
@@ -732,10 +728,6 @@ func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *t
 		}
 	}
 	a.Spec.JWTDefaultPolicies = policyIDList
-
-	for i, p := range a.Spec.JWTDefaultPolicies {
-		fmt.Printf("==========%d===========: %s \n", i, p)
-	}
 }
 
 // checkLoopingTargets Check if there is any other api's linking to a
