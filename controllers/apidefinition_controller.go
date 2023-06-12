@@ -716,12 +716,11 @@ func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *t
 	//for x := range a.Spec.JWTDefaultPolicies {
 	//	a.Spec.JWTDefaultPolicies[x] = encodeIfNotBase64(a.Spec.JWTDefaultPolicies[x])
 	//}
-	//allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
 	//for i, p := range allPolicies {
 	//	fmt.Printf("==========%d===========: %s, %s \n", i, p.Name, *p.MID)
 	//}
+	allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
 	policyIDList := make([]string, 0)
-
 	nameMIDMap := make(map[string]string)
 	for _, p := range allPolicies {
 		nameMIDMap[p.Name] = *p.MID
