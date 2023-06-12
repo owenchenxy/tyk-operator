@@ -70,6 +70,8 @@ func removeTarget(slice []model.Target, s model.Target) (result []model.Target) 
 	return
 }
 
+// Find Policy ID by Policy Name
+
 // EncodeNS encodes given decoded string based on base64.
 func EncodeNS(decoded string) string {
 	return base64.RawURLEncoding.EncodeToString([]byte(decoded))

@@ -318,6 +318,11 @@ func (r *SecurityPolicyReconciler) update(ctx context.Context,
 		return nil, err
 	}
 
+	err = r.updateJWTDefaultPoliciesOfLinkedAPIs(ctx, policy)
+	if err != nil {
+		return nil, err
+	}
+
 	polOnTyk, _ := klient.Universal.Portal().Policy().Get(ctx, *policy.Spec.MID) //nolint:errcheck
 
 	r.Log.Info("Successfully updated Policy")
@@ -400,6 +405,16 @@ func (r *SecurityPolicyReconciler) create(ctx context.Context, policy *tykv1.Sec
 		return err
 	}
 
+	err = r.updateJWTDefaultPoliciesOfLinkedAPIs(ctx, policy)
+	if err != nil {
+		r.Log.Error(err,
+			"failed to update JWT default policies of linkedAPIs",
+			"Policy", client.ObjectKeyFromObject(policy),
+		)
+
+		return err
+	}
+
 	polOnTyk, _ := klient.Universal.Portal().Policy().Get(ctx, *spec.MID) //nolint:errcheck
 
 	return r.updatePolicyStatus(ctx, policy, func(status *tykv1.SecurityPolicyStatus) {
@@ -438,6 +453,36 @@ func (r *SecurityPolicyReconciler) updatePolicyStatus(
 	}
 
 	return r.Status().Update(ctx, policy)
+}
+
+// updateJWTDefaultPolicies of api definitions associated with this policy.
+func (r *SecurityPolicyReconciler) updateJWTDefaultPoliciesOfLinkedAPIs(ctx context.Context,
+	policy *tykv1.SecurityPolicy,
+) error {
+	r.Log.Info("Updating linked api JWT default policies")
+
+	for _, a := range policy.Status.LinkedAPIs {
+		namespace := ""
+		if a.Namespace != nil {
+			namespace = *a.Namespace
+		}
+		api := &tykv1.ApiDefinition{}
+		if err := r.Get(ctx, types.NamespacedName{Name: a.Name, Namespace: namespace}, api); err != nil {
+			r.Log.Error(err, "Failed to get the linked API", "api", a.String())
+			return err
+		}
+
+		api = &tykv1.ApiDefinition{}
+		jwtDefaultPolicyIDs := api.Spec.JWTDefaultPolicies
+		jwtDefaultPolicyIDs = append(jwtDefaultPolicyIDs, *policy.Spec.MID)
+		api.Spec.JWTDefaultPolicies = jwtDefaultPolicyIDs
+		if err := r.Status().Update(ctx, api); err != nil {
+			r.Log.Error(err, "Failed to update status of JWT default policies", "api", a.String())
+
+			return err
+		}
+	}
+	return nil
 }
 
 // updateStatusOfLinkedAPIs updates the status of api definitions associated with this
