@@ -1,0 +1,12 @@
+helmCharts:
+  - releaseName: cert-manager
+    namespace: cert-manager
+    name: cert-manager
+    version: 0.9.2
+    includeCRDs: true
+    repo: https://charts.bitnami.com/bitnami
+    valuesInline:
+      installCRDs: true
+
+resources:
+  - resources/namespace.yaml

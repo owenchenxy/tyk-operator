@@ -53,7 +53,7 @@ type SecurityPolicyReconciler struct {
 // Reconcile reconciles SecurityPolicy custom resources
 func (r *SecurityPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("SecurityPolicy", req.NamespacedName.String())
-	//ns := req.NamespacedName.String()
+	ns := req.NamespacedName.String()
 
 	log.Info("Reconciling SecurityPolicy instance")
 
@@ -81,14 +81,14 @@ func (r *SecurityPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 
 		util.AddFinalizer(policy, policyFinalizer)
 
-		//if policy.Spec.ID == nil || *policy.Spec.ID == "" {
-		//	if policy.Spec.ID == nil {
-		//		policy.Spec.ID = new(string)
-		//	}
-		//
-		//	polID := EncodeNS(ns)
-		//	policy.Spec.ID = &polID
-		//}
+		if policy.Spec.ID == nil || *policy.Spec.ID == "" {
+			if policy.Spec.ID == nil {
+				policy.Spec.ID = new(string)
+			}
+
+			polID := EncodeNS(ns)
+			policy.Spec.ID = &polID
+		}
 
 		if policy.Spec.OrgID == nil || *policy.Spec.OrgID == "" {
 			if policy.Spec.OrgID == nil {

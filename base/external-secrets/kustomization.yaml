@@ -1,0 +1,12 @@
+helmCharts:
+  - releaseName: external-secrets
+    namespace: external-secrets
+    name: external-secrets
+    version: 0.8.2
+    includeCRDs: true
+    repo: https://charts.external-secrets.io
+    valuesInline:
+      installCRDs: true
+
+resources:
+  - resources/namespace.yaml
