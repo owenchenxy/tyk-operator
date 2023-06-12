@@ -538,9 +538,6 @@ func (r *SecurityPolicyReconciler) updateStatusOfLinkedAPIs(ctx context.Context,
 			api.Status.LinkedByPolicies = addTarget(api.Status.LinkedByPolicies, target)
 		}
 
-		api.Spec.JWTDefaultPolicies = append(api.Spec.JWTDefaultPolicies, *policy.Spec.MID)
-		r.Log.Info("========JWTDefaultPolicies==========", "api", api.Spec.JWTDefaultPolicies)
-
 		if err := r.Status().Update(ctx, api); err != nil {
 			r.Log.Error(err, "Failed to update status of linked api definition", "api", name)
 
