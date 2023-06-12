@@ -434,6 +434,7 @@ func (r *SecurityPolicyReconciler) updatePolicyStatus(
 
 		apiOnTyk, _ := klient.Universal.Api().Get(ctx, EncodeNS(target.String()))
 		apiOnTyk.JWTDefaultPolicies = append(apiOnTyk.JWTDefaultPolicies, *policy.Spec.MID)
+		fmt.Printf("++++++JWT default policies: %+v\n", apiOnTyk.JWTDefaultPolicies)
 		_, err := klient.Universal.Api().Update(ctx, apiOnTyk)
 		if err != nil {
 			r.Log.Error(
