@@ -517,7 +517,6 @@ func (r *ApiDefinitionReconciler) update(ctx context.Context, desired *tykv1alph
 		return err
 	}
 
-	r.updateLinkedPolicies(ctx, desired)
 	return nil
 }
 
@@ -734,6 +733,15 @@ func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *t
 		}
 	}
 	a.Spec.JWTDefaultPolicies = policyIDList
+
+	_, err := klient.Universal.Api().Update(ctx, &a.Spec.APIDefinitionSpec)
+	if err != nil {
+		r.Log.Error(
+			err, "Failed to update JWT default polices on Tyk",
+			"ApiDefinition", client.ObjectKeyFromObject(a).String(),
+		)
+	}
+
 	for i, p := range a.Spec.JWTDefaultPolicies {
 		fmt.Printf("==========%d===========: %s \n", i, p)
 	}
