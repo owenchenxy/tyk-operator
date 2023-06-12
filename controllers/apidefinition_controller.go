@@ -728,7 +728,7 @@ func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *t
 	}
 	for _, policyName := range a.Spec.JWTDefaultPolicies {
 		if id, ok := nameMIDMap[policyName]; ok {
-			policyIDList = append(policyIDList, id)
+			AddUniqueElement(&policyIDList, id)
 		}
 	}
 	a.Spec.JWTDefaultPolicies = policyIDList

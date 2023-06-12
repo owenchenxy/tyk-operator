@@ -47,6 +47,17 @@ func containsString(slice []string, s string) bool {
 	return false
 }
 
+// add unique element to slice
+func AddUniqueElement(list *[]string, element string) {
+	seen := make(map[string]bool)
+	for _, item := range *list {
+		seen[item] = true
+	}
+	if !seen[element] {
+		*list = append(*list, element)
+	}
+}
+
 // addTarget adds given target to given slice if the slice does not contain the target.
 func addTarget(slice []model.Target, target model.Target) (result []model.Target) {
 	for _, item := range slice {
