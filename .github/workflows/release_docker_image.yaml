@@ -42,7 +42,7 @@ jobs:
           context: .
 #          platforms: linux/amd64
           push: ${{ startsWith(github.ref, 'refs/heads/xychen') }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:0.13.1
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:0.13.2
           labels: ${{ steps.metadata.outputs.labels }}
 #          cache-from: type=gha
 #          cache-to: type=gha,mode=max
