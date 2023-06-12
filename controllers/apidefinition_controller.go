@@ -718,7 +718,7 @@ func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *t
 	}
 	allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
 	for i, p := range allPolicies {
-		fmt.Printf("==========%d===========: %s, %s \n", i, p.Name, p.ID)
+		fmt.Printf("==========%d===========: %s, %v \n", i, p.Name, p.ID)
 	}
 
 	for k, x := range a.Spec.JWTScopeToPolicyMapping {
