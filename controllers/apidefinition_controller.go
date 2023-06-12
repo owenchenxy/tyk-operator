@@ -713,31 +713,32 @@ func encodeIfNotBase64(s string) string {
 func (r *ApiDefinitionReconciler) updateLinkedPolicies(ctx context.Context, a *tykv1alpha1.ApiDefinition) {
 	r.Log.Info("Updating linked policies")
 
-	//for x := range a.Spec.JWTDefaultPolicies {
-	//	a.Spec.JWTDefaultPolicies[x] = encodeIfNotBase64(a.Spec.JWTDefaultPolicies[x])
-	//}
-	//for i, p := range allPolicies {
-	//	fmt.Printf("==========%d===========: %s, %s \n", i, p.Name, *p.MID)
-	//}
-	allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
-	policyIDList := make([]string, 0)
-	nameMIDMap := make(map[string]string)
-	for _, p := range allPolicies {
-		nameMIDMap[p.Name] = *p.MID
-	}
-	for _, policyName := range a.Spec.JWTDefaultPolicies {
-		if id, ok := nameMIDMap[policyName]; ok {
-			policyIDList = append(policyIDList, id)
-		}
-	}
-	a.Spec.JWTDefaultPolicies = policyIDList
-	for i, p := range a.Spec.JWTDefaultPolicies {
-		fmt.Printf("==========%d===========: %s \n", i, p)
+	for x := range a.Spec.JWTDefaultPolicies {
+		a.Spec.JWTDefaultPolicies[x] = encodeIfNotBase64(a.Spec.JWTDefaultPolicies[x])
 	}
 
 	for k, x := range a.Spec.JWTScopeToPolicyMapping {
 		a.Spec.JWTScopeToPolicyMapping[k] = encodeIfNotBase64(x)
 	}
+	//for i, p := range allPolicies {
+	//	fmt.Printf("==========%d===========: %s, %s \n", i, p.Name, *p.MID)
+	//}
+	//allPolicies, _ := klient.Universal.Portal().Policy().All(ctx)
+	//policyIDList := make([]string, 0)
+	//nameMIDMap := make(map[string]string)
+	//for _, p := range allPolicies {
+	//	nameMIDMap[p.Name] = *p.MID
+	//}
+	//for _, policyName := range a.Spec.JWTDefaultPolicies {
+	//	if id, ok := nameMIDMap[policyName]; ok {
+	//		policyIDList = append(policyIDList, id)
+	//	}
+	//}
+	//a.Spec.JWTDefaultPolicies = policyIDList
+	//for i, p := range a.Spec.JWTDefaultPolicies {
+	//	fmt.Printf("==========%d===========: %s \n", i, p)
+	//}
+
 }
 
 // checkLoopingTargets Check if there is any other api's linking to a
