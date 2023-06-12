@@ -472,7 +472,6 @@ func (r *SecurityPolicyReconciler) updateJWTDefaultPoliciesOfLinkedAPIs(ctx cont
 			return err
 		}
 
-		api = &tykv1.ApiDefinition{}
 		jwtDefaultPolicyIDs := api.Spec.JWTDefaultPolicies
 		jwtDefaultPolicyIDs = append(jwtDefaultPolicyIDs, *policy.Spec.MID)
 		api.Spec.JWTDefaultPolicies = jwtDefaultPolicyIDs
